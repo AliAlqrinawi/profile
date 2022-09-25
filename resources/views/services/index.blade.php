@@ -27,7 +27,6 @@
 <div class="row">
     <div class="col-xl-12 col-md-12">
         <div class="card">
-
             <div class="card-body">
                 <div class="table-responsive hoverable-table">
                     <table class="table table-hover" id="get_service" data-page-length='100' >

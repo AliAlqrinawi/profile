@@ -4,14 +4,34 @@ namespace App\Http\Controllers\CategoryOfWorkers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CategoryOfWorkers;
+use App\Models\summ;
 use App\Models\Work;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryOfWorkersController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(CategoryOfWorkers::class);    
+    // }
+    public function getsumm(Request $request)
+    {
+        $f =  summ::first();
+       return view('summ.test' , compact('f'));
+    }
+
+    public function summ(Request $request)
+    {
+       summ::create($request->all());
+    }
     public function create()
     {
+        if(Gate::denies('categories.view')){
+            abort(403);
+        }
+        // $this->authorize('viewAny' , CategoryOfWorkers::class);
         $categores =  CategoryOfWorkers::paginate(5);
         $category =  CategoryOfWorkers::paginate(5);
         return view('Categores.index');
@@ -19,6 +39,10 @@ class CategoryOfWorkersController extends Controller
 
     public function get_categories()
     {
+        if(Gate::denies('categories.view')){
+            abort(403);
+        }
+        // $this->authorize('viewAny' , CategoryOfWorkers::class);
         $categories =  CategoryOfWorkers::all();
         if($categories){
             return response()->json([
@@ -38,6 +62,9 @@ class CategoryOfWorkersController extends Controller
 
     public function store(Request $request)
     {
+        if(Gate::denies('categories.create')){
+            abort(403);
+        }
         $messges  = [
             'name_ar.required' => 'قم بتعبئة الأسم بشكل صحيح',
             'name_en.required' => 'قم بتعبئة الأسم بشكل صحيح',
@@ -60,6 +87,10 @@ class CategoryOfWorkersController extends Controller
 
     public function edit($id)
     {
+
+        if(Gate::denies('categories.update')){
+            abort(403);
+        }
         $categorey = CategoryOfWorkers::find($id);
         if ($categorey) {
             return response()->json([
@@ -76,6 +107,10 @@ class CategoryOfWorkersController extends Controller
 
     public function update(Request $request , $id)
     {
+        if(Gate::denies('categories.update')){
+            abort(403);
+        }
+
         $validator = Validator::make($request->all(), [
             'name_ar' => 'required',
             'name_en' => 'required',
@@ -109,6 +144,11 @@ class CategoryOfWorkersController extends Controller
 
     public function destroy($id)
     {
+        // $this->authorize('delete' , CategoryOfWorkers::class);
+        if(Gate::denies('categories.delete')){
+            abort(403);
+        }
+
         $categorey = CategoryOfWorkers::destroy($id);
         return response()->json(['success'=>'Delete record.']);
     }

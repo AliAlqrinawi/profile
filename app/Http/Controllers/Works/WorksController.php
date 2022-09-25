@@ -7,12 +7,16 @@ use App\Models\Attachment;
 use App\Models\CategoryOfWorkers;
 use App\Models\Work;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class WorksController extends Controller
 {
     public function index()
     {
+        if(Gate::denies('work.view')){
+            abort(403);
+        }
         $category = CategoryOfWorkers::get();
         $categories = CategoryOfWorkers::get();
         return view('works.index', compact('category', 'categories'));
@@ -20,6 +24,9 @@ class WorksController extends Controller
 
     public function get_works()
     {
+        if(Gate::denies('work.view')){
+            abort(403);
+        }
         $works = Work::with('has_categores')->get();
         if ($works) {
             return response()->json([
@@ -37,6 +44,9 @@ class WorksController extends Controller
 
     public function create()
     {
+        if(Gate::denies('work.create')){
+            abort(403);
+        }
         $category = CategoryOfWorkers::get();
 
         return view('works.create', compact('category'));
@@ -44,6 +54,9 @@ class WorksController extends Controller
 
     public function store(Request $request)
     {
+        if(Gate::denies('work.create')){
+            abort(403);
+        }
         $validator = Validator::make($request->all(), [
             'title_ar' => 'required|max:255',
             'title_en' => 'required|max:255',
@@ -104,6 +117,9 @@ class WorksController extends Controller
 
     public function edite($id)
     {
+        if(Gate::denies('work.update')){
+            abort(403);
+        }
         $work = Work::find($id);
         $category = CategoryOfWorkers::get();
         $attachments = Attachment::where('id_work', $work->id)->get();
@@ -127,7 +143,9 @@ class WorksController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        if(Gate::denies('work.update')){
+            abort(403);
+        }
         $validator = Validator::make($request->all(), [
             'title_ar' => 'required|max:255',
             'title_en' => 'required|max:255',
@@ -178,6 +196,9 @@ class WorksController extends Controller
 
     public function destroy_work($id)
     {
+        if(Gate::denies('work.delete')){
+            abort(403);
+        }
         $work = Work::find($id);
         if ($work) {
             $work->destroy($id);
@@ -195,6 +216,9 @@ class WorksController extends Controller
 
     public function destroy_attachment($id)
     {
+        if(Gate::denies('work.delete')){
+            abort(403);
+        }
         $attachment = Attachment::find($id);
         if ($attachment) {
             $attachment->destroy($id);
