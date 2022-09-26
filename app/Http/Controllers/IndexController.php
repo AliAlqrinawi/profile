@@ -14,8 +14,8 @@ class IndexController extends Controller
             abort(403);
         }
         // dd(Gate::denies('index.show'));
-        // $this->authorize('index' , client::class);
-
+        // $this->authorize('index.show' , CategoryOfWorkers::class);
+        // dd();
         return view('index');
     }
 
@@ -23,6 +23,7 @@ class IndexController extends Controller
         if(Gate::denies('index.show')){
             abort(403);
         }
+        // $this->authorize('index.show' , CategoryOfWorkers::class);
         $clients = client::all();
         if($clients){
             return response()->json([

@@ -10,7 +10,7 @@ class categoryPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user , $permissions)
+    public function before(User $user)
     {
         if($user->id == 1) {
             return true;
