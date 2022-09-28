@@ -53,26 +53,27 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        if(Gate::denies('role.create')){
-            abort(403);
-        }
-        $request->validate(['name' => 'required' , 'permissions' => 'required'] );
+        return $request->all();
+        // if(Gate::denies('role.create')){
+        //     abort(403);
+        // }
+        // $request->validate(['name' => 'required' , 'permissions' => 'required'] );
 
-        $role = new Role();
-        $role->name = $request->name;
-        $role->permissions = $request->permissions;
-        $role->save();
-        $user = new User();
-        $user->name = $request->user_name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
-        $role_user = new role_user();
-        $role_user->role_id = $role->id;
-        $role_user->user_id = $user->id;
-        $role_user->save();
-        // dd($role->id ." ". $user->id);
-        return redirect()->route('roles.index')->with('success' , 'created is success.');
+        // $role = new Role();
+        // $role->name = $request->name;
+        // $role->permissions = $request->permissions;
+        // $role->save();
+        // $user = new User();
+        // $user->name = $request->user_name;
+        // $user->email = $request->email;
+        // $user->password = Hash::make($request->password);
+        // $user->save();
+        // $role_user = new role_user();
+        // $role_user->role_id = $role->id;
+        // $role_user->user_id = $user->id;
+        // $role_user->save();
+        // // dd($role->id ." ". $user->id);
+        // return redirect()->route('roles.index')->with('success' , 'created is success.');
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Models\Work;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class CategoryOfWorkersController extends Controller
 {
@@ -19,7 +20,8 @@ class CategoryOfWorkersController extends Controller
     public function getsumm(Request $request)
     {
         $f =  summ::first();
-       return view('summ.test' , compact('f'));
+    //    return view('Dashboard.form-elements' , compact('f'));
+    return view('summ.test' , compact('f'));
     }
 
     public function summ(Request $request)
@@ -62,26 +64,34 @@ class CategoryOfWorkersController extends Controller
 
     public function store(Request $request)
     {
-        if(Gate::denies('categories.create')){
-            abort(403);
-        }
-        $messges  = [
-            'name_ar.required' => 'قم بتعبئة الأسم بشكل صحيح',
-            'name_en.required' => 'قم بتعبئة الأسم بشكل صحيح',
-        ];
-        $validator = Validator::make($request->all(), [
-            'name_ar' => 'required',
-            'name_en' => 'required',
-        ] , $messges);
+        // try {
 
-        if ($validator->passes()) {
-//            for ($f=0 ; $f<=2000 ; $f++){
-                CategoryOfWorkers::create($request->all());
-//            }
-            $categores =  CategoryOfWorkers::latest()->first();
-            return response()->json([$categores , 'success'=>'Added new records.']);
-        }
-        return response()->json(['error'=>$validator->errors()->all()]);
+            if(Gate::denies('categories.create')){
+                abort(403);
+            }
+            $messges  = [
+                'name_ar.required' => 'قم بتعبئة الأسم بشكل صحيح',
+                'name_en.required' => 'قم بتعبئة الأسم بشكل صحيح',
+            ];
+            $validator = Validator::make($request->all(), [
+                'name_ar' => 'required',
+                'name_en' => 'required',
+            ] , $messges);
+    
+            if ($validator->passes()) {
+    //            for ($f=0 ; $f<=2000 ; $f++){
+                    CategoryOfWorkers::create($request->all());
+    //            }
+                $categores =  CategoryOfWorkers::latest()->first();
+                return response()->json([$categores , 'success'=>'Added new records.']);
+            }
+            return response()->json(['error'=>$validator->errors()->all()]);
+          
+        //   } catch (\Exception $e) {
+          
+        //       return abort(404);
+        //   }
+        
 
     }
 

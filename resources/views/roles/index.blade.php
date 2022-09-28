@@ -7,7 +7,7 @@
     <div class="my-auto">
         <div class="d-flex">
             <h4 class="content-title mb-0 my-auto">Create</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
-                roless</span>
+            roles</span>
         </div>
     </div>
 </div>
@@ -19,7 +19,7 @@
     <div class="col-xl-12 col-md-12">
         <div class="card">
             <div class="card-header">
-                <h3>roless
+                <h3>roles
                     <a href="{{ route('roles.create') }}" class="btn btn-primary float-right">Add
                         roles</a>
                 </h3>
@@ -55,12 +55,12 @@
                             </td>
                             <td>{{ $role->users_count }}</td>
                             <td>{{ $role->created_at  }}</td>
-                            <td><a href="{{ route('roles.edit' , $role->id) }}" class="btn btn-warning">Edit</a>
+                            <td><a href="{{ route('roles.edit' , $role->id) }}" class="btn btn-warning" style="width: 60xp; text-align: center; display: inline;">Edit</a>
 
-                                <form action=" {{ route('roles.destroy' , $role->id) }} " method="post">
+                                <form action=" {{ route('roles.destroy' , $role->id) }}"  method="post" style="width: 60xp; text-align: center; display: inline;" > 
                                     {{ csrf_field() }}
                                     <input type="hidden" name="_method" value="delete">
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-danger" >Delete</button>
                                 </form>
                             </td>
                             </tr>
